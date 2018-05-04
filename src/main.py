@@ -68,9 +68,9 @@ def read_graph():
 	Reads the input network in networkx.
 	'''
 	if args.weighted:
-		G = nx.read_edgelist(args.input, nodetype=int, data=(('weight',float),), create_using=nx.DiGraph())
+		G = nx.read_edgelist(args.input, nodetype=str, data=(('weight',float),), create_using=nx.DiGraph())
 	else:
-		G = nx.read_edgelist(args.input, nodetype=int, create_using=nx.DiGraph())
+		G = nx.read_edgelist(args.input, nodetype=str, create_using=nx.DiGraph())
 		for edge in G.edges():
 			G[edge[0]][edge[1]]['weight'] = 1
 
@@ -85,7 +85,8 @@ def learn_embeddings(walks):
 	'''
 	walks = [map(str, walk) for walk in walks]
 	model = Word2Vec(walks, size=args.dimensions, window=args.window_size, min_count=0, sg=1, workers=args.workers, iter=args.iter)
-	model.save_word2vec_format(args.output)
+	#model.save_word2vec_format(args.output)
+	model.wv.save_word2vec_format(args.output)
 	
 	return
 
